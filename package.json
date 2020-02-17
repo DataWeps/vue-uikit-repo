@@ -1,22 +1,41 @@
 {
   "name": "@dataweps/vue-uikit-repo",
   "version": "1.0.0",
+  "private": true,
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/DataWeps/vue-uikit-repo.git"
-  },
   "author": {
     "name": "Martin Kravec"
   },
-  "license": "MIT",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "core-js": "^3.6.4",
+    "vue": "^2.6.11",
+    "vue-router": "^3.1.5"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.2.0",
+    "@vue/cli-plugin-router": "~4.2.0",
+    "@vue/cli-plugin-typescript": "~4.2.0",
+    "@vue/cli-service": "~4.2.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.2",
+    "typescript": "~3.7.5",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "_id": "@dataweps/vue-uikit-repo@1.0.0",
   "bugs": {
     "url": "https://github.com/DataWeps/vue-uikit-repo/issues"
   },
   "homepage": "https://github.com/DataWeps/vue-uikit-repo#readme",
-  "_id": "@dataweps/vue-uikit-repo@1.0.0"
+  "license": "MIT",
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/DataWeps/vue-uikit-repo.git"
+  }
 }
