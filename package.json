@@ -10,10 +10,13 @@
     "type": "git",
     "url": "git+ssh://git@github.com/DataWeps/vue-uikit-repo.git"
   },
-  "author": "Martin Kravec",
-  "license": "ISC",
+  "author": {
+    "name": "Martin Kravec"
+  },
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/DataWeps/vue-uikit-repo/issues"
   },
-  "homepage": "https://github.com/DataWeps/vue-uikit-repo#readme"
+  "homepage": "https://github.com/DataWeps/vue-uikit-repo#readme",
+  "_id": "@dataweps/vue-uikit-repo@1.0.0"
 }
