@@ -1,0 +1,19 @@
+{
+  "name": "@dataweps/vue-uikit-repo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/DataWeps/vue-uikit-repo.git"
+  },
+  "author": "Martin Kravec",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DataWeps/vue-uikit-repo/issues"
+  },
+  "homepage": "https://github.com/DataWeps/vue-uikit-repo#readme"
+}
