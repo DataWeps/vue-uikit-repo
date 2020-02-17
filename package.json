@@ -1,7 +1,7 @@
 {
   "name": "@dataweps/vue-uikit-repo",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "description": "",
   "author": {
     "name": "Martin Kravec"
