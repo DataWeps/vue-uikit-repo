@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    Home
+  <div class="test-component">
+    <TestComponent />
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 import TestComponent from '@/components/TestComponent.vue';
 
 export default {
-  name: 'TestComponent',
+  name: 'TestComponentDemo',
   components: {
     TestComponent,
   },
