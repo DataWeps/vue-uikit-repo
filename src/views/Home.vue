@@ -1,17 +1,17 @@
 <template>
   <div class="home">
-    Home
+    <h2>Home</h2>
+    <p>
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quidem sit
+      veniam incidunt consectetur recusandae facilis, numquam iusto eos fuga
+      possimus beatae aspernatur molestiae totam quibusdam quas excepturi? Aut,
+      culpa doloremque.
+    </p>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import TestComponent from '@/components/TestComponent.vue';
-
 export default {
-  name: 'TestComponent',
-  components: {
-    TestComponent,
-  },
+  name: 'Jome',
 };
 </script>

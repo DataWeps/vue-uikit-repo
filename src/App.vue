@@ -1,9 +1,13 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/test-component-demo">Test component Demo</router-link>
-    </div>
+  <div id="app" class="uk-container">
+    <nav class="uk-navbar-container" uk-navbar>
+      <div class="uk-navbar-left">
+        <ul class="uk-navbar-nav">
+          <li><router-link to="/">Home</router-link></li>
+          <li><router-link to="/demos">Demos</router-link></li>
+        </ul>
+      </div>
+    </nav>
     <router-view />
   </div>
 </template>
