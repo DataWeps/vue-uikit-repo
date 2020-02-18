@@ -8,5 +8,15 @@
   </div>
 </template>
 
-<style lang="scss">
-</style>
+<style src="../node_modules/uikit/dist/css/uikit.min.css" lang="css"></style>
+<style src="@/assets/styles/app.sass" lang="sass"></style>
+
+<script>
+import UIkit from 'uikit';
+import Icons from 'uikit/dist/js/uikit-icons';
+UIkit.use(Icons);
+
+export default {
+  name: 'App',
+};
+</script>
