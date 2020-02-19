@@ -1,7 +1,7 @@
 module.exports = {
     devServer: {
       host: 'vue-uikit-repo.local',
-      port: 8080
+      port: 8081
     },
   
     css: {
