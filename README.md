@@ -37,7 +37,14 @@ npm run docs:build
 ```
 
 ## Deploy to NPM repository
-@todo Todo
+```
+// change version in package.json and then
+npm run build
+git add .
+git commit -m 'Production build'
+git push origin master
+npm publish
+```
 
 ## Install / Production Usage
 ```
