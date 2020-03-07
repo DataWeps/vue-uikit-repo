@@ -20,10 +20,11 @@ npm run build
 ```
 
 ## Demo
-The demonstration SFC specified with demo command of CLI Service must specify the demo directory as the base.
+Demo can be run with standard ``./watch`` or separately:
 ```
 npm run demo Demo.vue
 ```
+The demonstration SFC specified with demo command of CLI Service must specify the demo directory as the base.
 
 ## Documentation
 Serve documentation
@@ -37,6 +38,12 @@ npm run docs:build
 
 ## Deploy to NPM repository
 @todo Todo
+
+## Install / Production Usage
+```
+import VueUIKitRepo from 'vue-uikit-repo
+Vue.use(VueUIKitRepo)
+```
 
 ## Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
