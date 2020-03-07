@@ -1,4 +1,5 @@
 import { VueConstructor, PluginObject } from 'vue'
+import TestComponent from './components/TestComponent.vue';
 
 declare global {
   interface Window {
@@ -17,6 +18,8 @@ const install = (Vue: VueConstructor): void => {
   Vue.prototype.$add = (a: number, b: number): number => {
     return a + b
   }
+
+  Vue.component('TestComponent', TestComponent)
 
   // Usage:
   // {{ $add(1, 1) }}
