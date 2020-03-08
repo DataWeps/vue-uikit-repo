@@ -8567,6 +8567,252 @@
       undefined
     );
 
+  function isNative$1(Ctor) {
+    return typeof Ctor === 'function' && /native code/.test(Ctor.toString());
+  }
+
+  var hasSymbol$1 = typeof Symbol !== 'undefined' && isNative$1(Symbol) && typeof Reflect !== 'undefined' && isNative$1(Reflect.ownKeys);
+
+  var noopFn = function noopFn(_) {
+    return _;
+  };
+
+  var sharedPropertyDefinition$1 = {
+    enumerable: true,
+    configurable: true,
+    get: noopFn,
+    set: noopFn
+  };
+
+  function proxy$1(target, key, _a) {
+    var get = _a.get,
+        set = _a.set;
+    sharedPropertyDefinition$1.get = get || noopFn;
+    sharedPropertyDefinition$1.set = set || noopFn;
+    Object.defineProperty(target, key, sharedPropertyDefinition$1);
+  }
+
+  function assert(condition, msg) {
+    if (!condition) throw new Error("[vue-composition-api] " + msg);
+  }
+
+  function warn$1(msg, vm) {
+    Vue.util.warn(msg, vm);
+  }
+
+  var currentVue = null;
+  var currentVM = null;
+
+  function getCurrentVue() {
+    {
+      assert(currentVue, "must call Vue.use(plugin) before using any function.");
+    }
+    return currentVue;
+  }
+
+  function getCurrentVM() {
+    return currentVM;
+  }
+
+  function defineComponentInstance(Ctor, options) {
+    if (options === void 0) {
+      options = {};
+    }
+
+    var silent = Ctor.config.silent;
+    Ctor.config.silent = true;
+    var vm = new Ctor(options);
+    Ctor.config.silent = silent;
+    return vm;
+  }
+
+  var RefImpl =
+  /** @class */
+  function () {
+    function RefImpl(_a) {
+      var get = _a.get,
+          set = _a.set;
+      proxy$1(this, 'value', {
+        get: get,
+        set: set
+      });
+    }
+
+    return RefImpl;
+  }();
+
+  function createRef(options) {
+    // seal the ref, this could prevent ref from being observed
+    // It's safe to seal the ref, since we really shoulnd't extend it.
+    // related issues: #79
+    return Object.seal(new RefImpl(options));
+  } // implementation
+
+
+  function computed(options) {
+    var vm = getCurrentVM();
+
+    var get, _set;
+
+    if (typeof options === 'function') {
+      get = options;
+    } else {
+      get = options.get;
+      _set = options.set;
+    }
+
+    var computedHost = defineComponentInstance(getCurrentVue(), {
+      computed: {
+        $$state: {
+          get: get,
+          set: _set
+        }
+      }
+    });
+    return createRef({
+      get: function get() {
+        return computedHost.$$state;
+      },
+      set: function set(v) {
+        if (!_set) {
+          warn$1('Computed property was assigned to but it has no setter.', vm);
+          return;
+        }
+
+        computedHost.$$state = v;
+      }
+    });
+  }
+
+  //
+  var script$1 = {
+    props: {
+      user: {
+        type: Object,
+        default: null
+      },
+      'avatar-sm': {
+        type: Boolean,
+        default: false
+      },
+      'avatar-xl': {
+        type: Boolean,
+        default: false
+      },
+      'avatar-xxl': {
+        type: Boolean,
+        default: false
+      },
+      host: {
+        type: String,
+        default: process.env.VUE_APP_RAILS_URL
+      }
+    },
+    setup: function setup(props) {
+      var defaultAvatar = require('@/assets/images/user.svg');
+
+      var avatar = computed(function () {
+        if (!props.user || !props.user.avatar_url && !props.user.uploadedImage) return defaultAvatar;
+        return props.user.uploadedImage ? props.user.uploadedImage : props.host + props.user.avatar_url;
+      });
+      return {
+        props: props,
+        avatar: avatar,
+        defaultAvatar: defaultAvatar
+      };
+    }
+  };
+
+  var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
+
+  function createInjector(context) {
+    return function (id, style) {
+      return addStyle(id, style);
+    };
+  }
+
+  var HEAD = document.head || document.getElementsByTagName('head')[0];
+  var styles = {};
+
+  function addStyle(id, css) {
+    var group = isOldIE ? css.media || 'default' : id;
+    var style = styles[group] || (styles[group] = {
+      ids: new Set(),
+      styles: []
+    });
+
+    if (!style.ids.has(id)) {
+      style.ids.add(id);
+      var code = css.source;
+
+      if (css.map) {
+        // https://developer.chrome.com/devtools/docs/javascript-debugging
+        // this makes source maps inside style tags work properly in Chrome
+        code += '\n/*# sourceURL=' + css.map.sources[0] + ' */'; // http://stackoverflow.com/a/26603875
+
+        code += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) + ' */';
+      }
+
+      if (!style.element) {
+        style.element = document.createElement('style');
+        style.element.type = 'text/css';
+        if (css.media) style.element.setAttribute('media', css.media);
+        HEAD.appendChild(style.element);
+      }
+
+      if ('styleSheet' in style.element) {
+        style.styles.push(code);
+        style.element.styleSheet.cssText = style.styles.filter(Boolean).join('\n');
+      } else {
+        var index = style.ids.size - 1;
+        var textNode = document.createTextNode(code);
+        var nodes = style.element.childNodes;
+        if (nodes[index]) style.element.removeChild(nodes[index]);
+        if (nodes.length) style.element.insertBefore(textNode, nodes[index]);else style.element.appendChild(textNode);
+      }
+    }
+  }
+
+  var browser = createInjector;
+
+  /* script */
+  const __vue_script__$1 = script$1;
+
+  /* template */
+  var __vue_render__$1 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('img',{staticClass:"avatar",class:{
+      'avatar-sm': _vm.props.avatarSm,
+      'avatar-xl': _vm.props.avatarXl,
+      'avatar-xxl': _vm.props.avatarXxl,
+    },attrs:{"src":_vm.avatar}})};
+  var __vue_staticRenderFns__$1 = [];
+
+    /* style */
+    const __vue_inject_styles__$1 = function (inject) {
+      if (!inject) return
+      inject("data-v-0b674af2_0", { source: ".avatar[data-v-0b674af2]{object-fit:cover;width:35px;height:35px;border-radius:50%;background:inherit;margin:0 6px}.avatar-sm[data-v-0b674af2]{width:20px;height:20px}.avatar-xl[data-v-0b674af2]{width:100px;height:100px}.avatar-xxl[data-v-0b674af2]{width:150px;height:150px;margin:0}", map: undefined, media: undefined });
+
+    };
+    /* scoped */
+    const __vue_scope_id__$1 = "data-v-0b674af2";
+    /* module identifier */
+    const __vue_module_identifier__$1 = undefined;
+    /* functional template */
+    const __vue_is_functional_template__$1 = false;
+    /* style inject SSR */
+    
+
+    
+    var Avatar = normalizeComponent_1(
+      { render: __vue_render__$1, staticRenderFns: __vue_staticRenderFns__$1 },
+      __vue_inject_styles__$1,
+      __vue_script__$1,
+      __vue_scope_id__$1,
+      __vue_is_functional_template__$1,
+      __vue_module_identifier__$1,
+      browser,
+      undefined
+    );
+
   var version = '1.1.0';
 
   var install = function install(Vue) {
@@ -8578,7 +8824,8 @@
       return a + b;
     };
 
-    Vue.component('TestComponent', TestComponent); // Usage:
+    Vue.component('TestComponent', TestComponent);
+    Vue.component('Avatar', Avatar); // Usage:
     // {{ $add(1, 1) }}
 
     /*
