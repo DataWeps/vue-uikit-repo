@@ -13,6 +13,7 @@
 <script>
 import { computed } from '@vue/composition-api';
 export default {
+  name: 'Avatar',
   props: {
     user: {
       type: Object,
