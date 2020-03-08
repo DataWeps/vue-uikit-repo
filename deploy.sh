@@ -6,7 +6,7 @@ if ! git diff-index --quiet HEAD --; then
 else
     echo "Starting Development build"
     git checkout master &&
-    npm run docs &&
+    npm run docs:build &&
     npm run build &&
     git add -A . &&
     git commit -m 'Production build' &&

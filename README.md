@@ -39,7 +39,7 @@ npm run docs:build
 ## Deploy to NPM repository
 ```
 // change version in package.json and then
-./deploy
+./deploy.sh
 
 ## Install / Production Usage
 ```
