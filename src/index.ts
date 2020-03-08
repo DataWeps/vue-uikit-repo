@@ -15,7 +15,6 @@ const version = '__VERSION__'
 
 const install = (Vue: VueConstructor): void => {
 
-  Vue.use(VueCompositionApi)
   /*
    * NOTE:
    *   if you need to extend Vue contstructor, you can extend it in here.
@@ -44,5 +43,6 @@ const plugin: PluginObject<VueConstructor> = {
 export default plugin
 
 if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(VueCompositionApi)
   window.Vue.use(plugin)
 }
