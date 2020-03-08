@@ -1,4 +1,7 @@
 import { VueConstructor, PluginObject } from 'vue'
+
+import VueCompositionApi from '@vue/composition-api'
+
 import TestComponent from './components/TestComponent.vue';
 import Avatar from './components/Avatar.vue';
 
@@ -11,6 +14,8 @@ declare global {
 const version = '__VERSION__'
 
 const install = (Vue: VueConstructor): void => {
+
+  Vue.use(VueCompositionApi)
   /*
    * NOTE:
    *   if you need to extend Vue contstructor, you can extend it in here.
