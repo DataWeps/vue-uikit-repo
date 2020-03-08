@@ -1,5 +1,5 @@
 /*!
- * vue-uikit-repo v1.1.3 
+ * vue-uikit-repo v1.1.4 
  * (c) 2020 Martin Kravec
  * Released under the MIT License.
  */
@@ -9452,15 +9452,13 @@ var __vue_staticRenderFns__$1 = [];
     undefined
   );
 
-var version = '1.1.3';
+var version = '1.1.4';
 
 var install$1 = function install(Vue) {
-  Vue.use(plugin);
   /*
    * NOTE:
    *   if you need to extend Vue contstructor, you can extend it in here.
    */
-
   Vue.prototype.$add = function (a, b) {
     return a + b;
   };
@@ -9481,6 +9479,7 @@ var plugin$1 = {
 };
 
 if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(plugin);
   window.Vue.use(plugin$1);
 }
 
