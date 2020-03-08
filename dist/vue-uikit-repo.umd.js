@@ -1,5 +1,5 @@
 /*!
- * vue-uikit-repo v1.1.1 
+ * vue-uikit-repo v1.1.2 
  * (c) 2020 Martin Kravec
  * Released under the MIT License.
  */
@@ -8686,6 +8686,7 @@
 
   //
   var script$1 = {
+    name: 'Avatar',
     props: {
       user: {
         type: Object,
@@ -8789,11 +8790,11 @@
     /* style */
     const __vue_inject_styles__$1 = function (inject) {
       if (!inject) return
-      inject("data-v-0b674af2_0", { source: ".avatar[data-v-0b674af2]{object-fit:cover;width:35px;height:35px;border-radius:50%;background:inherit;margin:0 6px}.avatar-sm[data-v-0b674af2]{width:20px;height:20px}.avatar-xl[data-v-0b674af2]{width:100px;height:100px}.avatar-xxl[data-v-0b674af2]{width:150px;height:150px;margin:0}", map: undefined, media: undefined });
+      inject("data-v-2fcd1088_0", { source: ".avatar[data-v-2fcd1088]{object-fit:cover;width:35px;height:35px;border-radius:50%;background:inherit;margin:0 6px}.avatar-sm[data-v-2fcd1088]{width:20px;height:20px}.avatar-xl[data-v-2fcd1088]{width:100px;height:100px}.avatar-xxl[data-v-2fcd1088]{width:150px;height:150px;margin:0}", map: undefined, media: undefined });
 
     };
     /* scoped */
-    const __vue_scope_id__$1 = "data-v-0b674af2";
+    const __vue_scope_id__$1 = "data-v-2fcd1088";
     /* module identifier */
     const __vue_module_identifier__$1 = undefined;
     /* functional template */
@@ -8813,7 +8814,7 @@
       undefined
     );
 
-  var version = '1.1.1';
+  var version = '1.1.2';
 
   var install = function install(Vue) {
     /*
