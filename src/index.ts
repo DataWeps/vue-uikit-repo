@@ -1,5 +1,6 @@
 import { VueConstructor, PluginObject } from 'vue'
 import TestComponent from './components/TestComponent.vue';
+import Avatar from './components/Avatar.vue';
 
 declare global {
   interface Window {
@@ -20,6 +21,7 @@ const install = (Vue: VueConstructor): void => {
   }
 
   Vue.component('TestComponent', TestComponent)
+  Vue.component('Avatar', Avatar)
 
   // Usage:
   // {{ $add(1, 1) }}
