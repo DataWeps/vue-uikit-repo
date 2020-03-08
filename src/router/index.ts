@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Demos from '../views/Demos.vue'
 import TestComponentDemo from '../views/TestComponentDemo.vue'
+import AvatarDemo from '../views/AvatarDemo.vue'
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,11 @@ const routes = [
     path: '/test-component-demo',
     name: 'TestComponentDemo',
     component: TestComponentDemo
+  },
+  {
+    path: '/avatar-demo',
+    name: 'AvatarDemo',
+    component: AvatarDemo
   }
 ]
 

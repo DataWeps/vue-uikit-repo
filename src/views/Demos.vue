@@ -5,6 +5,9 @@
       <li>
         <router-link to="/test-component-demo">Test component Demo</router-link>
       </li>
+      <li>
+        <router-link to="/avatar-demo">Avatar Demo</router-link>
+      </li>
     </ul>
   </div>
 </template>
