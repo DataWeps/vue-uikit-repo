@@ -39,12 +39,12 @@ export default {
     const defaultAvatar = require('@/assets/images/user.svg');
 
     const avatar = computed(() => {
-      if (!props.user?.avatar_url && !props.user?.uploadedImage)
+      if (!props.user || (!props.user.avatar_url && !props.user.uploadedImage))
         return defaultAvatar;
 
-      return props.user?.uploadedImage
-        ? props.user?.uploadedImage
-        : props.host + props.user?.avatar_url;
+      return props.user.uploadedImage
+        ? props.user.uploadedImage
+        : props.host + props.user.avatar_url;
     });
 
     return {
@@ -58,23 +58,23 @@ export default {
 
 <style lang="sass" scoped>
 .avatar
-    object-fit: cover
-    width: 35px
-    height: 35px
-    border-radius: 50%
-    background: inherit
-    margin: 0 6px
+  object-fit: cover
+  width: 35px
+  height: 35px
+  border-radius: 50%
+  background: inherit
+  margin: 0 6px
 
 .avatar-sm
-    width: 20px
-    height: 20px
+  width: 20px
+  height: 20px
 
 .avatar-xl
-    width: 100px
-    height: 100px
+  width: 100px
+  height: 100px
 
 .avatar-xxl
-    width: 150px
-    height: 150px
-    margin: 0
+  width: 150px
+  height: 150px
+  margin: 0
 </style>
