@@ -1,5 +1,5 @@
 /*!
- * vue-uikit-repo v1.1.6 
+ * vue-uikit-repo v1.1.7 
  * (c) 2020 Martin Kravec
  * Released under the MIT License.
  */
@@ -8704,7 +8704,7 @@
       undefined
     );
 
-  var version = '1.1.6';
+  var version = '1.1.7';
 
   var install = function install(Vue) {
     /*
