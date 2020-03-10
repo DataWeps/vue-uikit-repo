@@ -3,9 +3,9 @@
     :src="avatar"
     class="avatar"
     :class="{
-      'avatar-sm': sm,
-      'avatar-xl': xl,
-      'avatar-xxl': xxl,
+      sm: sm,
+      xl: xl,
+      xxl: xxl,
     }"
   />
 </template>
@@ -60,15 +60,15 @@ export default {
   background: inherit
   margin: 0 6px
 
-.avatar-sm
+.sm
   width: 20px
   height: 20px
 
-.avatar-xl
+.xl
   width: 100px
   height: 100px
 
-.avatar-xxl
+.xxl
   width: 150px
   height: 150px
   margin: 0
