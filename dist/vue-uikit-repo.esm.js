@@ -1,5 +1,5 @@
 /*!
- * vue-uikit-repo v1.1.4 
+ * vue-uikit-repo v1.1.5 
  * (c) 2020 Martin Kravec
  * Released under the MIT License.
  */
@@ -8440,757 +8440,6 @@ if (inBrowser) {
   }, 0);
 }
 
-var toString$1 = function toString(x) {
-  return Object.prototype.toString.call(x);
-};
-
-function isNative$1(Ctor) {
-  return typeof Ctor === 'function' && /native code/.test(Ctor.toString());
-}
-
-var hasSymbol$1 = typeof Symbol !== 'undefined' && isNative$1(Symbol) && typeof Reflect !== 'undefined' && isNative$1(Reflect.ownKeys);
-
-var noopFn = function noopFn(_) {
-  return _;
-};
-
-var sharedPropertyDefinition$1 = {
-  enumerable: true,
-  configurable: true,
-  get: noopFn,
-  set: noopFn
-};
-
-function proxy$1(target, key, _a) {
-  var get = _a.get,
-      set = _a.set;
-  sharedPropertyDefinition$1.get = get || noopFn;
-  sharedPropertyDefinition$1.set = set || noopFn;
-  Object.defineProperty(target, key, sharedPropertyDefinition$1);
-}
-
-function def$1(obj, key, val, enumerable) {
-  Object.defineProperty(obj, key, {
-    value: val,
-    enumerable: !!enumerable,
-    writable: true,
-    configurable: true
-  });
-}
-
-var hasOwnProperty$1 = Object.prototype.hasOwnProperty;
-
-function hasOwn$1(obj, key) {
-  return hasOwnProperty$1.call(obj, key);
-}
-
-function assert(condition, msg) {
-  if (!condition) throw new Error("[vue-composition-api] " + msg);
-}
-
-function isPlainObject$1(x) {
-  return toString$1(x) === '[object Object]';
-}
-
-function isFunction(x) {
-  return typeof x === 'function';
-}
-
-function warn$1(msg, vm) {
-  Vue.util.warn(msg, vm);
-}
-
-var currentVue = null;
-var currentVM = null;
-
-function getCurrentVue() {
-  {
-    assert(currentVue, "must call Vue.use(plugin) before using any function.");
-  }
-  return currentVue;
-}
-
-function setCurrentVue(vue) {
-  currentVue = vue;
-}
-
-function getCurrentVM() {
-  return currentVM;
-}
-
-function setCurrentVM(vm) {
-  currentVM = vm;
-}
-
-function defineComponentInstance(Ctor, options) {
-  if (options === void 0) {
-    options = {};
-  }
-
-  var silent = Ctor.config.silent;
-  Ctor.config.silent = true;
-  var vm = new Ctor(options);
-  Ctor.config.silent = silent;
-  return vm;
-}
-
-function isComponentInstance(obj) {
-  return currentVue && obj instanceof currentVue;
-}
-
-function createSlotProxy(vm, slotName) {
-  return function () {
-    var args = [];
-
-    for (var _i = 0; _i < arguments.length; _i++) {
-      args[_i] = arguments[_i];
-    }
-
-    if (!vm.$scopedSlots[slotName]) {
-      return warn$1("slots." + slotName + "() got called outside of the \"render()\" scope", vm);
-    }
-
-    return vm.$scopedSlots[slotName].apply(vm, args);
-  };
-}
-
-function resolveSlots$1(slots, normalSlots) {
-  var res;
-
-  if (!slots) {
-    res = {};
-  } else if (slots._normalized) {
-    // fast path 1: child component re-render only, parent did not change
-    return slots._normalized;
-  } else {
-    res = {};
-
-    for (var key in slots) {
-      if (slots[key] && key[0] !== '$') {
-        res[key] = true;
-      }
-    }
-  } // expose normal slots on scopedSlots
-
-
-  for (var key in normalSlots) {
-    if (!(key in res)) {
-      res[key] = true;
-    }
-  }
-
-  return res;
-}
-
-function createSymbol(name) {
-  return hasSymbol$1 ? Symbol.for(name) : name;
-}
-var AccessControlIdentifierKey = createSymbol('vfa.key.accessControlIdentifier');
-var ReactiveIdentifierKey = createSymbol('vfa.key.reactiveIdentifier');
-var NonReactiveIdentifierKey = createSymbol('vfa.key.nonReactiveIdentifier'); // must be a string, symbol key is ignored in reactive
-
-var RefKey = 'vfa.key.refKey';
-
-var RefImpl =
-/** @class */
-function () {
-  function RefImpl(_a) {
-    var get = _a.get,
-        set = _a.set;
-    proxy$1(this, 'value', {
-      get: get,
-      set: set
-    });
-  }
-
-  return RefImpl;
-}();
-
-function createRef(options) {
-  // seal the ref, this could prevent ref from being observed
-  // It's safe to seal the ref, since we really shoulnd't extend it.
-  // related issues: #79
-  return Object.seal(new RefImpl(options));
-} // implementation
-
-
-function ref$1(raw) {
-  // if (isRef(raw)) {
-  //   return {} as any;
-  // }
-  var _a;
-
-  var value = reactive((_a = {}, _a[RefKey] = raw, _a));
-  return createRef({
-    get: function get() {
-      return value[RefKey];
-    },
-    set: function set(v) {
-      return value[RefKey] = v;
-    }
-  });
-}
-
-function isRef(value) {
-  return value instanceof RefImpl;
-}
-
-var AccessControlIdentifier = {};
-var ReactiveIdentifier = {};
-var NonReactiveIdentifier = {};
-
-function isNonReactive(obj) {
-  return hasOwn$1(obj, NonReactiveIdentifierKey) && obj[NonReactiveIdentifierKey] === NonReactiveIdentifier;
-}
-
-function isReactive(obj) {
-  return hasOwn$1(obj, ReactiveIdentifierKey) && obj[ReactiveIdentifierKey] === ReactiveIdentifier;
-}
-/**
- * Proxing property access of target.
- * We can do unwrapping and other things here.
- */
-
-
-function setupAccessControl(target) {
-  if (!isPlainObject$1(target) || isNonReactive(target) || Array.isArray(target) || isRef(target) || isComponentInstance(target)) {
-    return;
-  }
-
-  if (hasOwn$1(target, AccessControlIdentifierKey) && target[AccessControlIdentifierKey] === AccessControlIdentifier) {
-    return;
-  }
-
-  if (Object.isExtensible(target)) {
-    def$1(target, AccessControlIdentifierKey, AccessControlIdentifier);
-  }
-
-  var keys = Object.keys(target);
-
-  for (var i = 0; i < keys.length; i++) {
-    defineAccessControl(target, keys[i]);
-  }
-}
-/**
- * Auto unwrapping when access property
- */
-
-
-function defineAccessControl(target, key, val) {
-  if (key === '__ob__') return;
-  var getter;
-  var setter;
-  var property = Object.getOwnPropertyDescriptor(target, key);
-
-  if (property) {
-    if (property.configurable === false) {
-      return;
-    }
-
-    getter = property.get;
-    setter = property.set;
-
-    if ((!getter || setter) &&
-    /* not only have getter */
-    arguments.length === 2) {
-      val = target[key];
-    }
-  }
-
-  setupAccessControl(val);
-  Object.defineProperty(target, key, {
-    enumerable: true,
-    configurable: true,
-    get: function getterHandler() {
-      var value = getter ? getter.call(target) : val; // if the key is equal to RefKey, skip the unwrap logic
-
-      if (key !== RefKey && isRef(value)) {
-        return value.value;
-      } else {
-        return value;
-      }
-    },
-    set: function setterHandler(newVal) {
-      if (getter && !setter) return;
-      var value = getter ? getter.call(target) : val; // If the key is equal to RefKey, skip the unwrap logic
-      // If and only if "value" is ref and "newVal" is not a ref,
-      // the assignment should be proxied to "value" ref.
-
-      if (key !== RefKey && isRef(value) && !isRef(newVal)) {
-        value.value = newVal;
-      } else if (setter) {
-        setter.call(target, newVal);
-      } else {
-        val = newVal;
-      }
-
-      setupAccessControl(newVal);
-    }
-  });
-}
-
-function observe$1(obj) {
-  var Vue = getCurrentVue();
-  var observed;
-
-  if (Vue.observable) {
-    observed = Vue.observable(obj);
-  } else {
-    var vm = defineComponentInstance(Vue, {
-      data: {
-        $$state: obj
-      }
-    });
-    observed = vm._data.$$state;
-  }
-
-  return observed;
-}
-/**
- * Make obj reactivity
- */
-
-
-function reactive(obj) {
-  if (!obj) {
-    warn$1('"reactive()" is called without provide an "object".'); // @ts-ignore
-
-    return;
-  }
-
-  if (!isPlainObject$1(obj) || isReactive(obj) || isNonReactive(obj) || !Object.isExtensible(obj)) {
-    return obj;
-  }
-
-  var observed = observe$1(obj);
-  def$1(observed, ReactiveIdentifierKey, ReactiveIdentifier);
-  setupAccessControl(observed);
-  return observed;
-}
-/**
- * Make sure obj can't be a reactive
- */
-
-
-function nonReactive(obj) {
-  if (!isPlainObject$1(obj)) {
-    return obj;
-  } // set the vue observable flag at obj
-
-
-  def$1(obj, '__ob__', observe$1({}).__ob__); // mark as nonReactive
-
-  def$1(obj, NonReactiveIdentifierKey, NonReactiveIdentifier);
-  return obj;
-}
-/**
- * Helper that recursively merges two data objects together.
- */
-
-
-function mergeData$1(to, from) {
-  if (!from) return to;
-  var key;
-  var toVal;
-  var fromVal;
-  var keys = hasSymbol$1 ? Reflect.ownKeys(from) : Object.keys(from);
-
-  for (var i = 0; i < keys.length; i++) {
-    key = keys[i]; // in case the object is already observed...
-
-    if (key === '__ob__') continue;
-    toVal = to[key];
-    fromVal = from[key];
-
-    if (!hasOwn$1(to, key)) {
-      to[key] = fromVal;
-    } else if (toVal !== fromVal && isPlainObject$1(toVal) && !isRef(toVal) && isPlainObject$1(fromVal) && !isRef(fromVal)) {
-      mergeData$1(toVal, fromVal);
-    }
-  }
-
-  return to;
-}
-
-function install(Vue, _install) {
-  if (currentVue && currentVue === Vue) {
-    {
-      assert(false, 'already installed. Vue.use(plugin) should be called only once');
-    }
-    return;
-  }
-
-  Vue.config.optionMergeStrategies.setup = function (parent, child) {
-    return function mergedSetupFn(props, context) {
-      return mergeData$1(typeof child === 'function' ? child(props, context) || {} : {}, typeof parent === 'function' ? parent(props, context) || {} : {});
-    };
-  };
-
-  setCurrentVue(Vue);
-
-  _install(Vue);
-}
-
-function __read(o, n) {
-  var m = typeof Symbol === "function" && o[Symbol.iterator];
-  if (!m) return o;
-  var i = m.call(o),
-      r,
-      ar = [],
-      e;
-
-  try {
-    while ((n === void 0 || n-- > 0) && !(r = i.next()).done) {
-      ar.push(r.value);
-    }
-  } catch (error) {
-    e = {
-      error: error
-    };
-  } finally {
-    try {
-      if (r && !r.done && (m = i["return"])) m.call(i);
-    } finally {
-      if (e) throw e.error;
-    }
-  }
-
-  return ar;
-}
-
-function set$1(vm, key, value) {
-  var state = vm.__secret_vfa_state__ = vm.__secret_vfa_state__ || {};
-  state[key] = value;
-}
-
-function get(vm, key) {
-  return (vm.__secret_vfa_state__ || {})[key];
-}
-
-var vmStateManager = {
-  set: set$1,
-  get: get
-};
-
-function asVmProperty(vm, propName, propValue) {
-  var props = vm.$options.props;
-
-  if (!(propName in vm) && !(props && hasOwn$1(props, propName))) {
-    proxy$1(vm, propName, {
-      get: function get() {
-        return propValue.value;
-      },
-      set: function set(val) {
-        propValue.value = val;
-      }
-    });
-    {
-      // expose binding to Vue Devtool as a data property
-      // delay this until state has been resolved to prevent repeated works
-      vm.$nextTick(function () {
-        proxy$1(vm._data, propName, {
-          get: function get() {
-            return propValue.value;
-          },
-          set: function set(val) {
-            propValue.value = val;
-          }
-        });
-      });
-    }
-  } else {
-    if (props && hasOwn$1(props, propName)) {
-      warn$1("The setup binding property \"" + propName + "\" is already declared as a prop.", vm);
-    } else {
-      warn$1("The setup binding property \"" + propName + "\" is already declared.", vm);
-    }
-  }
-}
-
-function updateTemplateRef(vm) {
-  var rawBindings = vmStateManager.get(vm, 'rawBindings') || {};
-  if (!rawBindings || !Object.keys(rawBindings).length) return;
-  var refs = vm.$refs;
-  var oldRefKeys = vmStateManager.get(vm, 'refs') || [];
-
-  for (var index = 0; index < oldRefKeys.length; index++) {
-    var key = oldRefKeys[index];
-    var setupValue = rawBindings[key];
-
-    if (!refs[key] && setupValue && isRef(setupValue)) {
-      setupValue.value = null;
-    }
-  }
-
-  var newKeys = Object.keys(refs);
-  var validNewKeys = [];
-
-  for (var index = 0; index < newKeys.length; index++) {
-    var key = newKeys[index];
-    var setupValue = rawBindings[key];
-
-    if (refs[key] && setupValue && isRef(setupValue)) {
-      setupValue.value = refs[key];
-      validNewKeys.push(key);
-    }
-  }
-
-  vmStateManager.set(vm, 'refs', validNewKeys);
-}
-
-function resolveScopedSlots$1(vm, slotsProxy) {
-  var parentVode = vm.$options._parentVnode;
-  if (!parentVode) return;
-  var prevSlots = vmStateManager.get(vm, 'slots') || [];
-  var curSlots = resolveSlots$1(parentVode.data.scopedSlots, vm.$slots); // remove staled slots
-
-  for (var index = 0; index < prevSlots.length; index++) {
-    var key = prevSlots[index];
-
-    if (!curSlots[key]) {
-      delete slotsProxy[key];
-    }
-  } // proxy fresh slots
-
-
-  var slotNames = Object.keys(curSlots);
-
-  for (var index = 0; index < slotNames.length; index++) {
-    var key = slotNames[index];
-
-    if (!slotsProxy[key]) {
-      slotsProxy[key] = createSlotProxy(vm, key);
-    }
-  }
-
-  vmStateManager.set(vm, 'slots', slotNames);
-}
-
-function activateCurrentInstance(vm, fn, onError) {
-  var preVm = getCurrentVM();
-  setCurrentVM(vm);
-
-  try {
-    return fn(vm);
-  } catch (err) {
-    if (onError) {
-      onError(err);
-    } else {
-      throw err;
-    }
-  } finally {
-    setCurrentVM(preVm);
-  }
-}
-
-function mixin(Vue) {
-  Vue.mixin({
-    beforeCreate: functionApiInit,
-    mounted: function mounted() {
-      updateTemplateRef(this);
-    },
-    updated: function updated() {
-      updateTemplateRef(this);
-    }
-  });
-  /**
-   * Vuex init hook, injected into each instances init hooks list.
-   */
-
-  function functionApiInit() {
-    var vm = this;
-    var $options = vm.$options;
-    var setup = $options.setup,
-        render = $options.render;
-
-    if (render) {
-      // keep currentInstance accessible for createElement
-      $options.render = function () {
-        var _this = this;
-
-        var args = [];
-
-        for (var _i = 0; _i < arguments.length; _i++) {
-          args[_i] = arguments[_i];
-        }
-
-        return activateCurrentInstance(vm, function () {
-          return render.apply(_this, args);
-        });
-      };
-    }
-
-    if (!setup) {
-      return;
-    }
-
-    if (typeof setup !== 'function') {
-      {
-        warn$1('The "setup" option should be a function that returns a object in component definitions.', vm);
-      }
-      return;
-    }
-
-    var data = $options.data; // wrapper the data option, so we can invoke setup before data get resolved
-
-    $options.data = function wrappedData() {
-      initSetup(vm, vm.$props);
-      return typeof data === 'function' ? data.call(vm, vm) : data || {};
-    };
-  }
-
-  function initSetup(vm, props) {
-    if (props === void 0) {
-      props = {};
-    }
-
-    var setup = vm.$options.setup;
-    var ctx = createSetupContext(vm); // resolve scopedSlots and slots to functions
-
-    resolveScopedSlots$1(vm, ctx.slots);
-    var binding;
-    activateCurrentInstance(vm, function () {
-      binding = setup(props, ctx);
-    });
-    if (!binding) return;
-
-    if (isFunction(binding)) {
-      // keep typescript happy with the binding type.
-      var bindingFunc_1 = binding; // keep currentInstance accessible for createElement
-
-      vm.$options.render = function () {
-        resolveScopedSlots$1(vm, ctx.slots);
-        return activateCurrentInstance(vm, function () {
-          return bindingFunc_1();
-        });
-      };
-
-      return;
-    }
-
-    if (isPlainObject$1(binding)) {
-      var bindingObj_1 = binding;
-      vmStateManager.set(vm, 'rawBindings', binding);
-      Object.keys(binding).forEach(function (name) {
-        var bindingValue = bindingObj_1[name]; // only make primitive value reactive
-
-        if (!isRef(bindingValue)) {
-          if (isReactive(bindingValue)) {
-            bindingValue = ref$1(bindingValue);
-          } else {
-            // a non-reactive should not don't get reactivity
-            bindingValue = ref$1(nonReactive(bindingValue));
-          }
-        }
-
-        asVmProperty(vm, name, bindingValue);
-      });
-      return;
-    }
-
-    {
-      assert(false, "\"setup\" must return a \"Object\" or a \"Function\", got \"" + Object.prototype.toString.call(binding).slice(8, -1) + "\"");
-    }
-  }
-
-  function createSetupContext(vm) {
-    var ctx = {
-      slots: {}
-    };
-    var props = ['root', 'parent', 'refs', 'attrs', 'listeners', 'isServer', 'ssrContext'];
-    var methodReturnVoid = ['emit'];
-    props.forEach(function (key) {
-      var _a;
-
-      var targetKey;
-      var srcKey;
-
-      if (Array.isArray(key)) {
-        _a = __read(key, 2), targetKey = _a[0], srcKey = _a[1];
-      } else {
-        targetKey = srcKey = key;
-      }
-
-      srcKey = "$" + srcKey;
-      proxy$1(ctx, targetKey, {
-        get: function get() {
-          return vm[srcKey];
-        },
-        set: function set() {
-          warn$1("Cannot assign to '" + targetKey + "' because it is a read-only property", vm);
-        }
-      });
-    });
-    methodReturnVoid.forEach(function (key) {
-      var srcKey = "$" + key;
-      proxy$1(ctx, key, {
-        get: function get() {
-          return function () {
-            var args = [];
-
-            for (var _i = 0; _i < arguments.length; _i++) {
-              args[_i] = arguments[_i];
-            }
-
-            var fn = vm[srcKey];
-            fn.apply(vm, args);
-          };
-        }
-      });
-    });
-    return ctx;
-  }
-}
-
-
-function computed(options) {
-  var vm = getCurrentVM();
-
-  var get, _set;
-
-  if (typeof options === 'function') {
-    get = options;
-  } else {
-    get = options.get;
-    _set = options.set;
-  }
-
-  var computedHost = defineComponentInstance(getCurrentVue(), {
-    computed: {
-      $$state: {
-        get: get,
-        set: _set
-      }
-    }
-  });
-  return createRef({
-    get: function get() {
-      return computedHost.$$state;
-    },
-    set: function set(v) {
-      if (!_set) {
-        warn$1('Computed property was assigned to but it has no setter.', vm);
-        return;
-      }
-
-      computedHost.$$state = v;
-    }
-  });
-}
-
-var _install = function _install(Vue) {
-  return install(Vue, mixin);
-};
-
-var plugin = {
-  install: _install
-}; // Auto install if it is not done yet and `window` has `Vue`.
-// To allow users to avoid auto-installation in some cases,
-
-if (currentVue && typeof window !== 'undefined' && window.Vue) {
-  _install(window.Vue);
-}
-
 var script = Vue.extend({
   name: 'TestComponent',
   data: function data() {
@@ -9322,6 +8571,123 @@ var __vue_staticRenderFns__ = [];
     undefined
   );
 
+function isNative$1(Ctor) {
+  return typeof Ctor === 'function' && /native code/.test(Ctor.toString());
+}
+
+var hasSymbol$1 = typeof Symbol !== 'undefined' && isNative$1(Symbol) && typeof Reflect !== 'undefined' && isNative$1(Reflect.ownKeys);
+
+var noopFn = function noopFn(_) {
+  return _;
+};
+
+var sharedPropertyDefinition$1 = {
+  enumerable: true,
+  configurable: true,
+  get: noopFn,
+  set: noopFn
+};
+
+function proxy$1(target, key, _a) {
+  var get = _a.get,
+      set = _a.set;
+  sharedPropertyDefinition$1.get = get || noopFn;
+  sharedPropertyDefinition$1.set = set || noopFn;
+  Object.defineProperty(target, key, sharedPropertyDefinition$1);
+}
+
+function assert(condition, msg) {
+  if (!condition) throw new Error("[vue-composition-api] " + msg);
+}
+
+function warn$1(msg, vm) {
+  Vue.util.warn(msg, vm);
+}
+
+var currentVue = null;
+var currentVM = null;
+
+function getCurrentVue() {
+  {
+    assert(currentVue, "must call Vue.use(plugin) before using any function.");
+  }
+  return currentVue;
+}
+
+function getCurrentVM() {
+  return currentVM;
+}
+
+function defineComponentInstance(Ctor, options) {
+  if (options === void 0) {
+    options = {};
+  }
+
+  var silent = Ctor.config.silent;
+  Ctor.config.silent = true;
+  var vm = new Ctor(options);
+  Ctor.config.silent = silent;
+  return vm;
+}
+
+var RefImpl =
+/** @class */
+function () {
+  function RefImpl(_a) {
+    var get = _a.get,
+        set = _a.set;
+    proxy$1(this, 'value', {
+      get: get,
+      set: set
+    });
+  }
+
+  return RefImpl;
+}();
+
+function createRef(options) {
+  // seal the ref, this could prevent ref from being observed
+  // It's safe to seal the ref, since we really shoulnd't extend it.
+  // related issues: #79
+  return Object.seal(new RefImpl(options));
+} // implementation
+
+
+function computed(options) {
+  var vm = getCurrentVM();
+
+  var get, _set;
+
+  if (typeof options === 'function') {
+    get = options;
+  } else {
+    get = options.get;
+    _set = options.set;
+  }
+
+  var computedHost = defineComponentInstance(getCurrentVue(), {
+    computed: {
+      $$state: {
+        get: get,
+        set: _set
+      }
+    }
+  });
+  return createRef({
+    get: function get() {
+      return computedHost.$$state;
+    },
+    set: function set(v) {
+      if (!_set) {
+        warn$1('Computed property was assigned to but it has no setter.', vm);
+        return;
+      }
+
+      computedHost.$$state = v;
+    }
+  });
+}
+
 //
 var script$1 = {
   name: 'Avatar',
@@ -9452,9 +8818,9 @@ var __vue_staticRenderFns__$1 = [];
     undefined
   );
 
-var version = '1.1.4';
+var version = '1.1.5';
 
-var install$1 = function install(Vue) {
+var install = function install(Vue) {
   /*
    * NOTE:
    *   if you need to extend Vue contstructor, you can extend it in here.
@@ -9473,14 +8839,13 @@ var install$1 = function install(Vue) {
    */
 };
 
-var plugin$1 = {
-  install: install$1,
+var plugin = {
+  install: install,
   version: version
 };
 
 if (typeof window !== 'undefined' && window.Vue) {
   window.Vue.use(plugin);
-  window.Vue.use(plugin$1);
 }
 
-export default plugin$1;
+export default plugin;
