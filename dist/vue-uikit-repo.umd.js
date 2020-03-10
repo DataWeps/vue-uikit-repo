@@ -1,5 +1,5 @@
 /*!
- * vue-uikit-repo v1.1.8 
+ * vue-uikit-repo v1.1.9 
  * (c) 2020 Martin Kravec
  * Released under the MIT License.
  */
@@ -8586,15 +8586,15 @@
         type: Object,
         default: null
       },
-      avatarSm: {
+      sm: {
         type: Boolean,
         default: false
       },
-      avatarXl: {
+      xl: {
         type: Boolean,
         default: false
       },
-      avatarXxl: {
+      xxl: {
         type: Boolean,
         default: false
       },
@@ -8671,20 +8671,20 @@
 
   /* template */
   var __vue_render__$1 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('img',{staticClass:"avatar",class:{
-      'avatar-sm': _vm.avatarSm,
-      'avatar-xl': _vm.avatarXl,
-      'avatar-xxl': _vm.avatarXxl,
+      'avatar-sm': _vm.sm,
+      'avatar-xl': _vm.xl,
+      'avatar-xxl': _vm.xxl,
     },attrs:{"src":_vm.avatar}})};
   var __vue_staticRenderFns__$1 = [];
 
     /* style */
     const __vue_inject_styles__$1 = function (inject) {
       if (!inject) return
-      inject("data-v-5251b086_0", { source: ".avatar[data-v-5251b086]{object-fit:cover;width:35px;height:35px;border-radius:50%;background:inherit;margin:0 6px}.avatar-sm[data-v-5251b086]{width:20px;height:20px}.avatar-xl[data-v-5251b086]{width:100px;height:100px}.avatar-xxl[data-v-5251b086]{width:150px;height:150px;margin:0}", map: undefined, media: undefined });
+      inject("data-v-1c2385d4_0", { source: ".avatar[data-v-1c2385d4]{object-fit:cover;width:35px;height:35px;border-radius:50%;background:inherit;margin:0 6px}.avatar-sm[data-v-1c2385d4]{width:20px;height:20px}.avatar-xl[data-v-1c2385d4]{width:100px;height:100px}.avatar-xxl[data-v-1c2385d4]{width:150px;height:150px;margin:0}", map: undefined, media: undefined });
 
     };
     /* scoped */
-    const __vue_scope_id__$1 = "data-v-5251b086";
+    const __vue_scope_id__$1 = "data-v-1c2385d4";
     /* module identifier */
     const __vue_module_identifier__$1 = undefined;
     /* functional template */
@@ -8704,7 +8704,7 @@
       undefined
     );
 
-  var version = '1.1.8';
+  var version = '1.1.9';
 
   var install = function install(Vue) {
     /*
