@@ -3,15 +3,14 @@
     :src="avatar"
     class="avatar"
     :class="{
-      'avatar-sm': props.avatarSm,
-      'avatar-xl': props.avatarXl,
-      'avatar-xxl': props.avatarXxl,
+      'avatar-sm': avatarSm,
+      'avatar-xl': avatarXl,
+      'avatar-xxl': avatarXxl,
     }"
   />
 </template>
 
 <script>
-import { computed } from '@vue/composition-api';
 export default {
   name: 'Avatar',
   props: {
@@ -36,23 +35,18 @@ export default {
       default: process.env.VUE_APP_RAILS_URL,
     },
   },
-  setup(props) {
-    const defaultAvatar = require('@/assets/images/user.svg');
-
-    const avatar = computed(() => {
-      if (!props.user || (!props.user.avatar_url && !props.user.uploadedImage))
+  computed: {
+    defaultAvatar() {
+      return require('@/assets/images/user.svg');
+    },
+    avatar() {
+      if (!this.user || (!this.user.avatar_url && !this.user.uploadedImage))
         return defaultAvatar;
 
-      return props.user.uploadedImage
-        ? props.user.uploadedImage
-        : props.host + props.user.avatar_url;
-    });
-
-    return {
-      props,
-      avatar,
-      defaultAvatar,
-    };
+      return this.user.uploadedImage
+        ? this.user.uploadedImage
+        : this.host + this.user.avatar_url;
+    },
   },
 };
 </script>
