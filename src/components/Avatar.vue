@@ -3,9 +3,9 @@
     :src="avatar"
     class="avatar"
     :class="{
-      sm: sm,
-      xl: xl,
-      xxl: xxl,
+      'avatar-sm': sm,
+      'avatar-xl': xl,
+      'avatar-xxl': xxl,
     }"
   />
 </template>
@@ -41,7 +41,7 @@ export default {
     },
     avatar() {
       if (!this.user || (!this.user.avatar_url && !this.user.uploadedImage))
-        return defaultAvatar;
+        return this.defaultAvatar;
 
       return this.user.uploadedImage
         ? this.user.uploadedImage
@@ -60,15 +60,15 @@ export default {
   background: inherit
   margin: 0 6px
 
-.sm
+.avatar-sm
   width: 20px
   height: 20px
 
-.xl
+.avatar-xl
   width: 100px
   height: 100px
 
-.xxl
+.avatar-xxl
   width: 150px
   height: 150px
   margin: 0
