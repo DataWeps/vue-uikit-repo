@@ -18,15 +18,15 @@ export default {
       type: Object,
       default: null,
     },
-    'avatar-sm': {
+    avatarSm: {
       type: Boolean,
       default: false,
     },
-    'avatar-xl': {
+    avatarXl: {
       type: Boolean,
       default: false,
     },
-    'avatar-xxl': {
+    avatarXxl: {
       type: Boolean,
       default: false,
     },
