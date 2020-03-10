@@ -3,9 +3,9 @@
     :src="avatar"
     class="avatar"
     :class="{
-      'avatar-sm': avatarSm,
-      'avatar-xl': avatarXl,
-      'avatar-xxl': avatarXxl,
+      'avatar-sm': sm,
+      'avatar-xl': xl,
+      'avatar-xxl': xxl,
     }"
   />
 </template>
@@ -18,15 +18,15 @@ export default {
       type: Object,
       default: null,
     },
-    avatarSm: {
+    sm: {
       type: Boolean,
       default: false,
     },
-    avatarXl: {
+    xl: {
       type: Boolean,
       default: false,
     },
-    avatarXxl: {
+    xxl: {
       type: Boolean,
       default: false,
     },
