@@ -16,7 +16,9 @@ export default {
   props: {
     user: {
       type: Object,
-      default: null,
+      default() {
+        return null;
+      },
     },
     sm: {
       type: Boolean,

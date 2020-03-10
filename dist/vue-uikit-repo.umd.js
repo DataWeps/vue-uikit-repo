@@ -1,5 +1,5 @@
 /*!
- * vue-uikit-repo v1.1.10 
+ * vue-uikit-repo v1.1.13 
  * (c) 2020 Martin Kravec
  * Released under the MIT License.
  */
@@ -8584,7 +8584,9 @@
     props: {
       user: {
         type: Object,
-        default: null
+        default: function _default() {
+          return null;
+        }
       },
       sm: {
         type: Boolean,
@@ -8608,7 +8610,7 @@
         return require('@/assets/images/user.svg');
       },
       avatar: function avatar() {
-        if (!this.user || !this.user.avatar_url && !this.user.uploadedImage) return defaultAvatar;
+        if (!this.user || !this.user.avatar_url && !this.user.uploadedImage) return this.defaultAvatar;
         return this.user.uploadedImage ? this.user.uploadedImage : this.host + this.user.avatar_url;
       }
     }
@@ -8680,11 +8682,11 @@
     /* style */
     const __vue_inject_styles__$1 = function (inject) {
       if (!inject) return
-      inject("data-v-1c2385d4_0", { source: ".avatar[data-v-1c2385d4]{object-fit:cover;width:35px;height:35px;border-radius:50%;background:inherit;margin:0 6px}.avatar-sm[data-v-1c2385d4]{width:20px;height:20px}.avatar-xl[data-v-1c2385d4]{width:100px;height:100px}.avatar-xxl[data-v-1c2385d4]{width:150px;height:150px;margin:0}", map: undefined, media: undefined });
+      inject("data-v-d97dd098_0", { source: ".avatar[data-v-d97dd098]{object-fit:cover;width:35px;height:35px;border-radius:50%;background:inherit;margin:0 6px}.avatar-sm[data-v-d97dd098]{width:20px;height:20px}.avatar-xl[data-v-d97dd098]{width:100px;height:100px}.avatar-xxl[data-v-d97dd098]{width:150px;height:150px;margin:0}", map: undefined, media: undefined });
 
     };
     /* scoped */
-    const __vue_scope_id__$1 = "data-v-1c2385d4";
+    const __vue_scope_id__$1 = "data-v-d97dd098";
     /* module identifier */
     const __vue_module_identifier__$1 = undefined;
     /* functional template */
@@ -8704,7 +8706,7 @@
       undefined
     );
 
-  var version = '1.1.10';
+  var version = '1.1.13';
 
   var install = function install(Vue) {
     /*
