@@ -1,7 +1,5 @@
 import { VueConstructor, PluginObject } from 'vue'
 
-import VueCompositionApi from '@vue/composition-api'
-
 import TestComponent from './components/TestComponent.vue';
 import Avatar from './components/Avatar.vue';
 
@@ -43,6 +41,5 @@ const plugin: PluginObject<VueConstructor> = {
 export default plugin
 
 if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(VueCompositionApi)
   window.Vue.use(plugin)
 }

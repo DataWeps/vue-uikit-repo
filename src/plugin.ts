@@ -4,8 +4,10 @@
  */
 
 import Vue, { VueConstructor } from 'vue'
+import VueCompositionApi from '@vue/composition-api'
 import plugin from './index'
 
+Vue.use(VueCompositionApi)
 Vue.use<VueConstructor>(plugin)
 
 /*
